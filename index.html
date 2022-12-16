@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My-VeeValidate-Practice</title>
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.0.2/vue.global.js"></script>
+  </head>
+  <body class="bg-gray-400">
+    <div id="app">
+      <h1 class="text-center font-bold text-2xl mt-10">
+        VeeValidate 註冊驗證練習
+      </h1>
+      <div class="image mx-auto w-40 mt-5">
+        <img src="front2.jpg" alt="image" />
+      </div>
+      <v-form
+        class="w-full max-w-lg mx-auto mt-5 bg-gray-200 shadow-md rounded-xl px-8 pt-6 pb-8 mb-4"
+        @submit="onSubmit"
+        v-slot="{ errors }"
+      >
+        <div class="mb-4">
+          <label class="block text-gray-700 text-lg font-bold mb-2" for="email">
+            Email
+          </label>
+          <v-field
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="email"
+            name="email"
+            type="email"
+            class="form-control"
+            :class="{'border-red-500': errors ['email']}"
+            rules="email|required"
+            placeholder="請輸入 Email"
+            v-model="user.email"
+          ></v-field>
+          <error-message
+            name="email"
+            class="text-red-500 text-s italic"
+          ></error-message>
+        </div>
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-lg font-bold mb-2"
+            for="password"
+          >
+            密碼
+          </label>
+          <v-field
+            name="密碼"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            :class="{'border-red-500': errors ['密碼']}"
+            id="password"
+            type="password"
+            rules="min:6|alpha_num"
+            placeholder="請輸入密碼"
+            v-model="user.password"
+          ></v-field>
+          <error-message
+            name="密碼"
+            class="text-red-500 text-s italic"
+          ></error-message>
+        </div>
+        <div class="mb-4">
+          <label for="name" class="block text-gray-700 text-lg font-bold mb-2"
+            >姓名</label
+          >
+          <v-field
+            id="name"
+            name="姓名"
+            type="text"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            :class="{'border-red-500': errors ['姓名']}"
+            rules="required"
+            placeholder="請輸入姓名"
+            v-model="user.name"
+          ></v-field>
+          <error-message
+            name="姓名"
+            class="text-red-500 text-s italic"
+          ></error-message>
+        </div>
+        <div class="mb-4">
+          <label for="phone" class="block text-gray-700 text-lg font-bold mb-2"
+            >電話</label
+          >
+          <v-field
+            id="phone"
+            name="電話"
+            type="text"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            :class="{'border-red-500': errors ['電話']}"
+            :rules="isPhone"
+            placeholder="請輸入電話"
+            v-model="user.phone"
+          ></v-field>
+          <error-message
+            name="電話"
+            class="text-red-500 text-s italic"
+          ></error-message>
+        </div>
+        <div class="mb-4">
+          <label for="region" class="block text-gray-700 text-lg font-bold mb-2"
+            >地區</label
+          >
+          <v-field
+            id="region"
+            name="地區"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-500 leading-tight focus:outline-none focus:shadow-outline"
+            :class="{'border-red-500': errors ['地區']}"
+            rules="required"
+            v-model="user.region"
+            as="select"
+          >
+            <option value="">請選擇地區</option>
+            <option value="亞洲">亞洲</option>
+            <option value="北美洲">北美洲</option>
+            <option value="歐洲">歐洲</option>
+            <option value="大洋洲">大洋洲</option>
+          </v-field>
+          <error-message
+            name="地區"
+            class="text-red-500 text-s italic"
+          ></error-message>
+        </div>
+
+        <div class="mb-8">
+          <label
+            for="address"
+            class="block text-gray-700 text-lg font-bold mb-2"
+            >地址</label
+          >
+          <v-field
+            id="address"
+            name="地址"
+            type="text"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            :class="{'border-red-500': errors ['地址']}"
+            rules="required"
+            placeholder="請輸入地址"
+          ></v-field>
+          <error-message
+            name="地址"
+            class="text-red-500 text-s italic"
+          ></error-message>
+        </div>
+        <div class="flex items-center justify-between">
+          <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
+          >
+            Sign Up
+          </button>
+        </div>
+      </v-form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vee-validate/4.1.17/vee-validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vee-validate/i18n@4.1.17/dist/vee-validate-i18n.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@vee-validate/rules@4.1.17/dist/vee-validate-rules.min.js"></script>
+    <script src="script.js" type="module"></script>
+  </body>
+</html>
