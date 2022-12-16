@@ -143,6 +143,7 @@
             :class="{'border-red-500': errors ['地址']}"
             rules="required"
             placeholder="請輸入地址"
+            v-model="user.address"
           ></v-field>
           <error-message
             name="地址"
